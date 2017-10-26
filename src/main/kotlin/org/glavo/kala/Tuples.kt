@@ -186,9 +186,7 @@ data class Tuple2<out T1, out T2>(
         }
     }
 
-    override fun arity(): Int {
-        return 2
-    }
+    override fun arity(): Int = 2
 
     /**
      * Getter of the 1st element of this tuple.
@@ -349,8 +347,171 @@ data class Tuple3<out T1, out T2, out T3>(
         @JvmField val _1: T1,
         @JvmField val _2: T2,
         @JvmField val _3: T3
-) {
+) : Tuple, Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
 
+        fun <T1, T2, T3> comparator(t1Comp: Comparator<in T1>, t2Comp: Comparator<in T2>, t3Comp: Comparator<in T3>): Comparator<Tuple3<T1, T2, T3>> {
+            return Comparator { t1, t2 ->
+                val check1 = t1Comp.compare(t1._1, t2._1)
+                if (check1 != 0) {
+                    return@Comparator check1
+                }
+
+                val check2 = t2Comp.compare(t1._2, t2._2)
+                if (check2 != 0) {
+                    return@Comparator check2
+                }
+
+                val check3 = t3Comp.compare(t1._3, t2._3)
+                if (check3 != 0) {
+                    return@Comparator check3
+                }
+
+                0// all components are equal
+            }
+        }
+    }
+
+    override fun arity(): Int = 3
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 {
+        return _1
+    }
+
+    /**
+     * Getter of the 2nd element of this tuple.
+     *
+     * @return the 2nd element of this Tuple.
+     */
+    fun _2(): T2 {
+        return _2
+    }
+
+    /**
+     * Getter of the 3rd element of this tuple.
+     *
+     * @return the 3rd element of this Tuple.
+     */
+    fun _3(): T3 {
+        return _3
+    }
+
+    /**
+     * Maps the components of this tuple using a mapper function.
+     *
+     * @param mapper the mapper function
+     * @param <U1> new type of the 1st component
+     * @param <U2> new type of the 2nd component
+     * @param <U3> new type of the 3rd component
+     * @return A new Tuple of same arity.
+    </U3></U2></U1> */
+    inline infix fun <U1, U2, U3> map(mapper: (T1, T2, T3) -> Tuple3<U1, U2, U3>): Tuple3<U1, U2, U3> {
+        return mapper(_1, _2, _3)
+    }
+
+    /**
+     * Maps the components of this tuple using a mapper function for each component.
+     *
+     * @param f1 the mapper function of the 1st component
+     * @param f2 the mapper function of the 2nd component
+     * @param f3 the mapper function of the 3rd component
+     * @param <U1> new type of the 1st component
+     * @param <U2> new type of the 2nd component
+     * @param <U3> new type of the 3rd component
+     * @return A new Tuple of same arity.
+    </U3></U2></U1> */
+    inline fun <U1, U2, U3> map(f1: (T1) -> U1, f2: (T2) -> U2, f3: (T3) -> U3): Tuple3<U1, U2, U3> {
+        return tuple(f1(_1), f2(_2), f3(_3))
+    }
+
+    /**
+     * Maps the 1st component of this tuple to a new value.
+     *
+     * @param <U> new type of the 1st component
+     * @param mapper A mapping function
+     * @return a new tuple based on this tuple and substituted 1st component
+    </U> */
+    inline infix fun <U> map1(mapper: (T1) -> U): Tuple3<U, T2, T3> {
+        return tuple(mapper(_1), _2, _3)
+    }
+
+    /**
+     * Maps the 2nd component of this tuple to a new value.
+     *
+     * @param <U> new type of the 2nd component
+     * @param mapper A mapping function
+     * @return a new tuple based on this tuple and substituted 2nd component
+    </U> */
+    inline infix fun <U> map2(mapper: (T2) -> U): Tuple3<T1, U, T3> {
+        return tuple(_1, mapper(_2), _3)
+    }
+
+    /**
+     * Maps the 3rd component of this tuple to a new value.
+     *
+     * @param <U> new type of the 3rd component
+     * @param mapper A mapping function
+     * @return a new tuple based on this tuple and substituted 3rd component
+    </U> */
+    inline infix fun <U> map3(mapper: (T3) -> U): Tuple3<T1, T2, U> {
+        return tuple(_1, _2, mapper(_3))
+    }
+
+    /**
+     * Transforms this tuple to an object of type U.
+     *
+     * @param f Transformation which creates a new object of type U based on this tuple's contents.
+     * @param <U> type of the transformation result
+     * @return An object of type U
+    </U> */
+    inline infix fun <U> apply(f: (T1, T2, T3) -> U): U {
+        return f(_1, _2, _3)
+    }
+
+    fun toTriple(): Triple<T1, T2, T3> {
+        return Triple(_1, _2, _3)
+    }
+
+    // -- Object
+
+    override fun toString(): String =
+            "($_1, $_2, $_3)"
+}
+
+/**
+ * Sets the 1st element of this tuple to the given `value`.
+ *
+ * @param value the new value
+ * @return a copy of this tuple with a new value for the 1st element of this Tuple.
+ */
+fun <T1, T2, T3> Tuple3<T1, T2, T3>.update1(value: T1): Tuple3<T1, T2, T3> {
+    return Tuple3(value, _2, _3)
+}
+
+/**
+ * Sets the 2nd element of this tuple to the given `value`.
+ *
+ * @param value the new value
+ * @return a copy of this tuple with a new value for the 2nd element of this Tuple.
+ */
+fun <T1, T2, T3> Tuple3<T1, T2, T3>.update2(value: T2): Tuple3<T1, T2, T3> {
+    return Tuple3(_1, value, _3)
+}
+
+/**
+ * Sets the 3rd element of this tuple to the given `value`.
+ *
+ * @param value the new value
+ * @return a copy of this tuple with a new value for the 3rd element of this Tuple.
+ */
+fun <T1, T2, T3> Tuple3<T1, T2, T3>.update3(value: T3): Tuple3<T1, T2, T3> {
+    return Tuple3(_1, _2, value)
 }
 
 //
@@ -362,8 +523,53 @@ data class Tuple4<out T1, out T2, out T3, out T4>(
         @JvmField val _2: T2,
         @JvmField val _3: T3,
         @JvmField val _4: T4
-) {
+) : Tuple, Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
 
+    override fun arity(): Int = 4
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 {
+        return _1
+    }
+
+    /**
+     * Getter of the 2nd element of this tuple.
+     *
+     * @return the 2nd element of this Tuple.
+     */
+    fun _2(): T2 {
+        return _2
+    }
+
+    /**
+     * Getter of the 3rd element of this tuple.
+     *
+     * @return the 3rd element of this Tuple.
+     */
+    fun _3(): T3 {
+        return _3
+    }
+
+    /**
+     * Getter of the 4th element of this tuple.
+     *
+     * @return the 4th element of this Tuple.
+     */
+    fun _4(): T4 {
+        return _4
+    }
+
+// -- Object
+
+    override fun toString(): String =
+            "($_1, $_2, $_3, $_4)"
 }
 
 //
@@ -376,8 +582,63 @@ data class Tuple5<out T1, out T2, out T3, out T4, out T5>(
         @JvmField val _3: T3,
         @JvmField val _4: T4,
         @JvmField val _5: T5
-) {
+) : Tuple, Serializable {
 
+    companion object {
+        private const val serialVersionUID = 1L
+    }
+
+    override fun arity(): Int = 5
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 {
+        return _1
+    }
+
+    /**
+     * Getter of the 2nd element of this tuple.
+     *
+     * @return the 2nd element of this Tuple.
+     */
+    fun _2(): T2 {
+        return _2
+    }
+
+    /**
+     * Getter of the 3rd element of this tuple.
+     *
+     * @return the 3rd element of this Tuple.
+     */
+    fun _3(): T3 {
+        return _3
+    }
+
+    /**
+     * Getter of the 4th element of this tuple.
+     *
+     * @return the 4th element of this Tuple.
+     */
+    fun _4(): T4 {
+        return _4
+    }
+
+    /**
+     * Getter of the 5th element of this tuple.
+     *
+     * @return the 5th element of this Tuple.
+     */
+    fun _5(): T5 {
+        return _5
+    }
+
+// -- Object
+
+    override fun toString(): String =
+            "($_1, $_2, $_3, $_4, $_5)"
 }
 
 //
@@ -391,8 +652,71 @@ data class Tuple6<out T1, out T2, out T3, out T4, out T5, out T6>(
         @JvmField val _4: T4,
         @JvmField val _5: T5,
         @JvmField val _6: T6
-) {
+) : Tuple, Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
 
+    override fun arity(): Int = 6
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 {
+        return _1
+    }
+
+    /**
+     * Getter of the 2nd element of this tuple.
+     *
+     * @return the 2nd element of this Tuple.
+     */
+    fun _2(): T2 {
+        return _2
+    }
+
+    /**
+     * Getter of the 3rd element of this tuple.
+     *
+     * @return the 3rd element of this Tuple.
+     */
+    fun _3(): T3 {
+        return _3
+    }
+
+    /**
+     * Getter of the 4th element of this tuple.
+     *
+     * @return the 4th element of this Tuple.
+     */
+    fun _4(): T4 {
+        return _4
+    }
+
+    /**
+     * Getter of the 5th element of this tuple.
+     *
+     * @return the 5th element of this Tuple.
+     */
+    fun _5(): T5 {
+        return _5
+    }
+
+    /**
+     * Getter of the 6th element of this tuple.
+     *
+     * @return the 6th element of this Tuple.
+     */
+    fun _6(): T6 {
+        return _6
+    }
+
+// -- Object
+
+    override fun toString(): String =
+            "($_1, $_2, $_3, $_4, $_5, $_6)"
 }
 
 //
@@ -407,8 +731,80 @@ data class Tuple7<out T1, out T2, out T3, out T4, out T5, out T6, out T7>(
         @JvmField val _5: T5,
         @JvmField val _6: T6,
         @JvmField val _7: T7
-) {
+) : Tuple, Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
 
+    override fun arity(): Int = 7
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 {
+        return _1
+    }
+
+    /**
+     * Getter of the 2nd element of this tuple.
+     *
+     * @return the 2nd element of this Tuple.
+     */
+    fun _2(): T2 {
+        return _2
+    }
+
+    /**
+     * Getter of the 3rd element of this tuple.
+     *
+     * @return the 3rd element of this Tuple.
+     */
+    fun _3(): T3 {
+        return _3
+    }
+
+    /**
+     * Getter of the 4th element of this tuple.
+     *
+     * @return the 4th element of this Tuple.
+     */
+    fun _4(): T4 {
+        return _4
+    }
+
+    /**
+     * Getter of the 5th element of this tuple.
+     *
+     * @return the 5th element of this Tuple.
+     */
+    fun _5(): T5 {
+        return _5
+    }
+
+    /**
+     * Getter of the 6th element of this tuple.
+     *
+     * @return the 6th element of this Tuple.
+     */
+    fun _6(): T6 {
+        return _6
+    }
+
+    /**
+     * Getter of the 7th element of this tuple.
+     *
+     * @return the 7th element of this Tuple.
+     */
+    fun _7(): T7 {
+        return _7
+    }
+
+// -- Object
+
+    override fun toString(): String =
+            "($_1, $_2, $_3, $_4, $_5, $_6, $_7)"
 }
 
 //
@@ -424,7 +820,88 @@ data class Tuple8<out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8
         @JvmField val _6: T6,
         @JvmField val _7: T7,
         @JvmField val _8: T8
-) {
+) : Tuple, Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
+
+    override fun arity(): Int = 8
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 {
+        return _1
+    }
+
+    /**
+     * Getter of the 2nd element of this tuple.
+     *
+     * @return the 2nd element of this Tuple.
+     */
+    fun _2(): T2 {
+        return _2
+    }
+
+    /**
+     * Getter of the 3rd element of this tuple.
+     *
+     * @return the 3rd element of this Tuple.
+     */
+    fun _3(): T3 {
+        return _3
+    }
+
+    /**
+     * Getter of the 4th element of this tuple.
+     *
+     * @return the 4th element of this Tuple.
+     */
+    fun _4(): T4 {
+        return _4
+    }
+
+    /**
+     * Getter of the 5th element of this tuple.
+     *
+     * @return the 5th element of this Tuple.
+     */
+    fun _5(): T5 {
+        return _5
+    }
+
+    /**
+     * Getter of the 6th element of this tuple.
+     *
+     * @return the 6th element of this Tuple.
+     */
+    fun _6(): T6 {
+        return _6
+    }
+
+    /**
+     * Getter of the 7th element of this tuple.
+     *
+     * @return the 7th element of this Tuple.
+     */
+    fun _7(): T7 {
+        return _7
+    }
+
+    /**
+     * Getter of the 8th element of this tuple.
+     *
+     * @return the 8th element of this Tuple.
+     */
+    fun _8(): T8 {
+        return _8
+    }
+// -- Object
+
+    override fun toString(): String =
+            "($_1, $_2, $_3, $_4, $_5, $_6, $_7, $_8)"
 
 }
 
@@ -575,4 +1052,16 @@ fun <T1, T2, T3, T4, T5, T6, T7> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t
 </T8></T7></T6></T5></T4></T3></T2></T1> */
 fun <T1, T2, T3, T4, T5, T6, T7, T8> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): Tuple8<T1, T2, T3, T4, T5, T6, T7, T8> {
     return Tuple8(t1, t2, t3, t4, t5, t6, t7, t8)
+}
+
+fun <T1, T2> Map.Entry<T1, T2>.toTuple(): Tuple2<T1, T2> {
+    return tuple(key, value)
+}
+
+fun <T1, T2> Pair<T1, T2>.toTuple(): Tuple2<T1, T2> {
+    return tuple(first, second)
+}
+
+fun <T1, T2, T3> Triple<T1, T2, T3>.toTuple(): Tuple3<T1, T2, T3> {
+    return tuple(first, second, third)
 }
