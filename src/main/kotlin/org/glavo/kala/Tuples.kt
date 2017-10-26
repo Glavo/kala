@@ -1,7 +1,8 @@
 package org.glavo.kala
 
 import java.io.Serializable
-import java.util.Comparator
+import java.util.*
+import java.util.function.Function
 
 interface Tuple {
     companion object {
@@ -66,7 +67,9 @@ object Tuple0 : Tuple, Comparable<Tuple0>, Serializable {
 
 data class Tuple1<out T1>(
         @JvmField val _1: T1
-) : Tuple, Serializable {
+) : Tuple, Comparable<Tuple1<@kotlin.UnsafeVariance T1>>, Serializable {
+
+
     companion object {
         private const val serialVersionUID: Long = 1L
 
@@ -95,7 +98,53 @@ data class Tuple1<out T1>(
     }
 
     override fun arity(): Int = 1
+
+    override fun compareTo(other: Tuple1<@UnsafeVariance T1>): Int =
+            Tuple1.compareTo<Nothing>(this, other)
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 = _1
+
+
+    /**
+     * Maps the components of this tuple using a mapper function.
+     *
+     * @param mapper the mapper function
+     * @param <U1> new type of the 1st component
+     * @return A new Tuple of same arity.
+     * @throws NullPointerException if `mapper` is null
+    </U1> */
+    infix inline fun <U1> map(mapper: (T1) -> U1): Tuple1<U1> {
+        return Tuple1(mapper(_1))
+    }
+
+    /**
+     * Transforms this tuple to an object of type U.
+     *
+     * @param f Transformation which creates a new object of type U based on this tuple's contents.
+     * @param <U> type of the transformation result
+     * @return An object of type U
+     * @throws NullPointerException if `f` is null
+    </U> */
+    inline infix fun <U> apply(f: (T1) -> U): U {
+        return f(_1)
+    }
 }
+
+/**
+ * Sets the 1st element of this tuple to the given `value`.
+ *
+ * @param value the new value
+ * @return a copy of this tuple with a new value for the 1st element of this Tuple.
+ */
+fun<T1> Tuple1<T1>.update1(value: T1): Tuple1<T1> {
+    return Tuple1(value)
+}
+
 
 data class Tuple2<out T1, out T2>(
         @JvmField val _1: T1,
