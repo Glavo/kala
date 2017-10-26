@@ -5,6 +5,196 @@ package org.glavo.kala
 import java.io.Serializable
 import java.util.*
 
+/**
+ * The base interface of all tuples.
+ *
+ * @author Glavo
+ */
+sealed class Tuple {
+
+    /**
+     * Returns the number of elements of this tuple.
+     *
+     * @return the number of elements.
+     */
+    abstract fun arity(): Int
+
+    companion object {
+        /**
+         * The maximum arity of an Tuple.
+         *
+         *
+         * Note: This value might be changed in a future version of Vavr.
+         * So it is recommended to use this constant instead of hardcoding the current maximum arity.
+         */
+        val MAX_ARITY = 8
+
+        // -- factory methods
+
+        /**
+         * Creates the empty tuple.
+         *
+         * @return the empty tuple.
+         */
+        @JvmStatic
+        fun empty(): Tuple0 {
+            return Tuple0.instance()
+        }
+
+        /**
+         * Creates a tuple of one element.
+         *
+         * @param <T1> type of the 1st element
+         * @param t1 the 1st element
+         * @return a tuple of one element.
+        </T1> */
+        @JvmStatic
+        fun <T1> of(t1: T1): Tuple1<T1> {
+            return Tuple1(t1)
+        }
+
+        /**
+         * Creates a tuple of two elements.
+         *
+         * @param <T1> type of the 1st element
+         * @param <T2> type of the 2nd element
+         * @param t1 the 1st element
+         * @param t2 the 2nd element
+         * @return a tuple of two elements.
+        </T2></T1> */
+        @JvmStatic
+        fun <T1, T2> of(t1: T1, t2: T2): Tuple2<T1, T2> {
+            return Tuple2(t1, t2)
+        }
+
+        /**
+         * Creates a tuple of three elements.
+         *
+         * @param <T1> type of the 1st element
+         * @param <T2> type of the 2nd element
+         * @param <T3> type of the 3rd element
+         * @param t1 the 1st element
+         * @param t2 the 2nd element
+         * @param t3 the 3rd element
+         * @return a tuple of three elements.
+        </T3></T2></T1> */
+        @JvmStatic
+        fun <T1, T2, T3> of(t1: T1, t2: T2, t3: T3): Tuple3<T1, T2, T3> {
+            return Tuple3(t1, t2, t3)
+        }
+
+        /**
+         * Creates a tuple of 4 elements.
+         *
+         * @param <T1> type of the 1st element
+         * @param <T2> type of the 2nd element
+         * @param <T3> type of the 3rd element
+         * @param <T4> type of the 4th element
+         * @param t1 the 1st element
+         * @param t2 the 2nd element
+         * @param t3 the 3rd element
+         * @param t4 the 4th element
+         * @return a tuple of 4 elements.
+        </T4></T3></T2></T1> */
+        @JvmStatic
+        fun <T1, T2, T3, T4> of(t1: T1, t2: T2, t3: T3, t4: T4): Tuple4<T1, T2, T3, T4> {
+            return Tuple4(t1, t2, t3, t4)
+        }
+
+        /**
+         * Creates a tuple of 5 elements.
+         *
+         * @param <T1> type of the 1st element
+         * @param <T2> type of the 2nd element
+         * @param <T3> type of the 3rd element
+         * @param <T4> type of the 4th element
+         * @param <T5> type of the 5th element
+         * @param t1 the 1st element
+         * @param t2 the 2nd element
+         * @param t3 the 3rd element
+         * @param t4 the 4th element
+         * @param t5 the 5th element
+         * @return a tuple of 5 elements.
+        </T5></T4></T3></T2></T1> */
+        @JvmStatic
+        fun <T1, T2, T3, T4, T5> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): Tuple5<T1, T2, T3, T4, T5> {
+            return Tuple5(t1, t2, t3, t4, t5)
+        }
+
+        /**
+         * Creates a tuple of 6 elements.
+         *
+         * @param <T1> type of the 1st element
+         * @param <T2> type of the 2nd element
+         * @param <T3> type of the 3rd element
+         * @param <T4> type of the 4th element
+         * @param <T5> type of the 5th element
+         * @param <T6> type of the 6th element
+         * @param t1 the 1st element
+         * @param t2 the 2nd element
+         * @param t3 the 3rd element
+         * @param t4 the 4th element
+         * @param t5 the 5th element
+         * @param t6 the 6th element
+         * @return a tuple of 6 elements.
+        </T6></T5></T4></T3></T2></T1> */
+        @JvmStatic
+        fun <T1, T2, T3, T4, T5, T6> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6): Tuple6<T1, T2, T3, T4, T5, T6> {
+            return Tuple6(t1, t2, t3, t4, t5, t6)
+        }
+
+        /**
+         * Creates a tuple of 7 elements.
+         *
+         * @param <T1> type of the 1st element
+         * @param <T2> type of the 2nd element
+         * @param <T3> type of the 3rd element
+         * @param <T4> type of the 4th element
+         * @param <T5> type of the 5th element
+         * @param <T6> type of the 6th element
+         * @param <T7> type of the 7th element
+         * @param t1 the 1st element
+         * @param t2 the 2nd element
+         * @param t3 the 3rd element
+         * @param t4 the 4th element
+         * @param t5 the 5th element
+         * @param t6 the 6th element
+         * @param t7 the 7th element
+         * @return a tuple of 7 elements.
+        </T7></T6></T5></T4></T3></T2></T1> */
+        @JvmStatic
+        fun <T1, T2, T3, T4, T5, T6, T7> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7): Tuple7<T1, T2, T3, T4, T5, T6, T7> {
+            return Tuple7(t1, t2, t3, t4, t5, t6, t7)
+        }
+
+        /**
+         * Creates a tuple of 8 elements.
+         *
+         * @param <T1> type of the 1st element
+         * @param <T2> type of the 2nd element
+         * @param <T3> type of the 3rd element
+         * @param <T4> type of the 4th element
+         * @param <T5> type of the 5th element
+         * @param <T6> type of the 6th element
+         * @param <T7> type of the 7th element
+         * @param <T8> type of the 8th element
+         * @param t1 the 1st element
+         * @param t2 the 2nd element
+         * @param t3 the 3rd element
+         * @param t4 the 4th element
+         * @param t5 the 5th element
+         * @param t6 the 6th element
+         * @param t7 the 7th element
+         * @param t8 the 8th element
+         * @return a tuple of 8 elements.
+        </T8></T7></T6></T5></T4></T3></T2></T1> */
+        @JvmStatic
+        fun <T1, T2, T3, T4, T5, T6, T7, T8> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): Tuple8<T1, T2, T3, T4, T5, T6, T7, T8> {
+            return Tuple8(t1, t2, t3, t4, t5, t6, t7, t8)
+        }
+    }
+}
+
 //
 //******************** Tuple0 ********************
 //
@@ -14,7 +204,7 @@ import java.util.*
  *
  * @author Glavo
  */
-object Tuple0 : Tuple, Comparable<Tuple0>, Serializable {
+object Tuple0 : Tuple(), Comparable<Tuple0>, Serializable {
     private const val serialVersionUID: Long = 1L
 
     /**
@@ -76,7 +266,7 @@ object Tuple0 : Tuple, Comparable<Tuple0>, Serializable {
  */
 data class Tuple1<out T1>(
         @JvmField val _1: T1
-) : Tuple, Serializable {
+) : Tuple(), Serializable {
 
 
     companion object {
@@ -165,7 +355,7 @@ fun <T1> Tuple1<T1>.update1(value: T1): Tuple1<T1> {
 data class Tuple2<out T1, out T2>(
         @JvmField val _1: T1,
         @JvmField val _2: T2
-) : Tuple, Serializable, Map.Entry<T1, T2> {
+) : Tuple(), Serializable, Map.Entry<T1, T2> {
 
     companion object {
         private const val serialVersionUID = 1L
@@ -347,7 +537,7 @@ data class Tuple3<out T1, out T2, out T3>(
         @JvmField val _1: T1,
         @JvmField val _2: T2,
         @JvmField val _3: T3
-) : Tuple, Serializable {
+) : Tuple(), Serializable {
     companion object {
         private const val serialVersionUID = 1L
 
@@ -523,7 +713,7 @@ data class Tuple4<out T1, out T2, out T3, out T4>(
         @JvmField val _2: T2,
         @JvmField val _3: T3,
         @JvmField val _4: T4
-) : Tuple, Serializable {
+) : Tuple(), Serializable {
     companion object {
         private const val serialVersionUID = 1L
     }
@@ -582,7 +772,7 @@ data class Tuple5<out T1, out T2, out T3, out T4, out T5>(
         @JvmField val _3: T3,
         @JvmField val _4: T4,
         @JvmField val _5: T5
-) : Tuple, Serializable {
+) : Tuple(), Serializable {
 
     companion object {
         private const val serialVersionUID = 1L
@@ -652,7 +842,7 @@ data class Tuple6<out T1, out T2, out T3, out T4, out T5, out T6>(
         @JvmField val _4: T4,
         @JvmField val _5: T5,
         @JvmField val _6: T6
-) : Tuple, Serializable {
+) : Tuple(), Serializable {
     companion object {
         private const val serialVersionUID = 1L
     }
@@ -731,7 +921,7 @@ data class Tuple7<out T1, out T2, out T3, out T4, out T5, out T6, out T7>(
         @JvmField val _5: T5,
         @JvmField val _6: T6,
         @JvmField val _7: T7
-) : Tuple, Serializable {
+) : Tuple(), Serializable {
     companion object {
         private const val serialVersionUID = 1L
     }
@@ -820,7 +1010,7 @@ data class Tuple8<out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8
         @JvmField val _6: T6,
         @JvmField val _7: T7,
         @JvmField val _8: T8
-) : Tuple, Serializable {
+) : Tuple(), Serializable {
     companion object {
         private const val serialVersionUID = 1L
     }
