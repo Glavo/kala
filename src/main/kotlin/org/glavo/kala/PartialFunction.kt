@@ -1,5 +1,7 @@
 package org.glavo.kala
 
+import org.glavo.kala.control.Option
+
 /**
  * Represents a partial function T -&gt; R that is not necessarily defined for all input values of type T.
  * The caller is responsible for calling the method isDefinedAt() before this function is applied to the value.
@@ -22,4 +24,31 @@ interface PartialFunction<in T, out R> : (T) -> R {
      * @return true, if the given value is contained in the function's domain, false otherwise
      */
     fun isDefinedAt(value: T): Boolean
+
+    /**
+     * Lifts this partial function into a total function that returns an {@code Option} result.
+     *
+     * @return a function that applies arguments to this function and returns {@code Some(result)}
+     *         if the function is defined for the given arguments, and {@code None} otherwise.
+     */
+    fun lift(): (T) -> Option<R> {
+        return { Option.whenIt(isDefinedAt(it), invoke(it)) }
+    }
+}
+
+inline fun <A, B> PartialFunction<A, B>.applyOrElse(x: A, default: (A) -> B): B {
+    return if (isDefinedAt(x)) this(x) else default(x)
+}
+
+infix fun <T1, R, U> PartialFunction<T1, R>.andThen(g: (R) -> U): PartialFunction<T1, U> {
+    return object : PartialFunction<T1, U> {
+        override fun invoke(p1: T1): U {
+            return g(this@andThen(p1))
+        }
+
+        override fun isDefinedAt(value: T1): Boolean {
+            return this@andThen.isDefinedAt(value)
+        }
+
+    }
 }

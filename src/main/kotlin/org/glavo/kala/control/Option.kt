@@ -4,10 +4,24 @@ import java.util.*
 
 sealed class Option<out T> {
     object None : Option<Nothing>() {
+        override val isEmpty: Boolean
+            get() = true
+
+        override fun get(): Nothing {
+            throw NoSuchElementException("No value present")
+        }
+
         override fun toString(): String = "None"
     }
 
     data class Some<out T>(val value: T) : Option<T>() {
+        override val isEmpty: Boolean
+            get() = false
+
+        override fun get(): T {
+            return value
+        }
+
         override fun toString(): String =
                 "Some($value)"
     }
@@ -42,7 +56,7 @@ sealed class Option<out T> {
          */
         @JvmStatic
         fun <T> some(value: T): Option<T> {
-            return Some(value!!)
+            return Some(value)
         }
 
         /**
@@ -110,5 +124,162 @@ sealed class Option<out T> {
         }
 
     }
+
+    /**
+     * Is true, if this is `None`, otherwise false, if this is `Some`.
+     */
+    abstract val isEmpty: Boolean
+
+    /**
+     * Is true, if this is `Some`, otherwise false, if this is `None`.
+     * <p>
+     * Please note that it is possible to create `Some(null)`, which is defined.
+     */
+    val isDefined: Boolean
+        get() = !isEmpty
+
+    /**
+     * Runs a Java Runnable passed as parameter if this `Option` is empty.
+     *
+     * @param action a given Runnable to be run
+     * @return this `Option`
+     */
+    inline infix fun onEmpty(action: () -> Unit): Option<T> {
+        if (isEmpty) {
+            action()
+        }
+        return this
+    }
+
+    /**
+     * Gets the value if this is a `Some` or throws if this is a `None`.
+     *
+     * @return the value
+     * @throws NoSuchElementException if this is a `None`.
+     */
+    abstract fun get(): T
+
+
+    /**
+     * Returns the value if this is a `Some`, otherwise throws an exception.
+     *
+     * @param exceptionSupplier An exception supplier
+     * @param <X>               A throwable
+     * @return This value, if this Option is defined, otherwise throws X
+     * @throws X a throwable
+    </X> */
+    inline infix fun <X : Throwable> getOrElseThrow(exceptionSupplier: () -> X): T {
+        return if (isEmpty) {
+            throw exceptionSupplier()
+        } else {
+            get()
+        }
+    }
+
+    /**
+     * Returns `Some(value)` if this is a `Some` and the value satisfies the given predicate.
+     * Otherwise `None` is returned.
+     *
+     * @param predicate A predicate which is used to test an optional value
+     * @return `Some(value)` or `None` as specified
+     */
+    inline infix fun filter(predicate: (T) -> Boolean): Option<T> {
+        return if (isEmpty || predicate(get())) this else none()
+    }
+
+    /**
+     * Maps the value to a new `Option` if this is a `Some`, otherwise returns `None`.
+     *
+     * @param mapper A mapper
+     * @param <U>    Component type of the resulting Option
+     * @return a new `Option`
+    </U> */
+    inline infix fun <U> flatMap(mapper: (T) -> Option<U>): Option<U> {
+        return if (isEmpty) none() else mapper(get())
+    }
+
+    /**
+     * Maps the value and wraps it in a new `Some` if this is a `Some`, returns `None`.
+     *
+     * @param mapper A value mapper
+     * @param <U>    The new value type
+     * @return a new `Some` containing the mapped value if this Option is defined, otherwise `None`, if this is empty.
+    </U> */
+    inline fun <U> map(mapper: (T) -> U): Option<U> {
+        return if (isEmpty) none() else some(mapper(get()))
+    }
+
+    /**
+     * Folds either the `None` or the `Some` side of the Option value.
+     *
+     * @param ifNone  maps the left value if this is a None
+     * @param f maps the value if this is a Some
+     * @param <U>         type of the folded value
+     * @return A value of type U
+    </U> */
+    inline fun <U> fold(ifNone: () -> U, f: (T) -> U): U {
+        return this.map(f).getOrElse(ifNone)
+    }
+
+    /**
+     * Applies an action to this value, if this option is defined, otherwise does nothing.
+     *
+     * @param action An action which can be applied to an optional value
+     * @return this `Option`
+     */
+    inline infix fun peek(action: (T) -> Unit): Option<T> {
+        if (isDefined) {
+            action(get())
+        }
+        return this
+    }
 }
 
+/**
+ * Returns the value if this is a `Some` or the `other` value if this is a `None`.
+ *
+ *
+ * Please note, that the other value is eagerly evaluated.
+ *
+ * @param other An alternative value
+ * @return This value, if this Option is defined or the `other` value, if this Option is empty.
+ */
+fun <T> Option<T>.getOrElse(other: T): T {
+    return if (isEmpty) other else get()
+}
+
+/**
+ * Returns this `Option` if it is nonempty, otherwise return the alternative.
+ *
+ * @param other An alternative `Option`
+ * @return this `Option` if it is nonempty, otherwise return the alternative.
+ */
+fun <T> Option<T>.orElse(other: Option<T>): Option<T> {
+    Objects.requireNonNull(other, "other is null")
+    return if (isEmpty) other else this
+}
+
+
+/**
+ * Returns this `Option` if it is nonempty, otherwise return the result of evaluating supplier.
+ *
+ * @param supplier An alternative `Option` supplier
+ * @return this `Option` if it is nonempty, otherwise return the result of evaluating supplier.
+ */
+inline infix fun <T> Option<T>.orElse(supplier: () -> Option<T>): Option<T> {
+    return if (isEmpty) supplier() else this
+}
+
+/**
+ * Returns the value if this is a `Some`, otherwise the `other` value is returned,
+ * if this is a `None`.
+ *
+ *
+ * Please note, that the other value is lazily evaluated.
+ *
+ * @param supplier An alternative value supplier
+ * @return This value, if this Option is defined or the `other` value, if this Option is empty.
+ */
+inline infix fun <T> Option<T>.getOrElse(supplier: () -> T): T {
+    return if (isEmpty) supplier() else get()
+}
