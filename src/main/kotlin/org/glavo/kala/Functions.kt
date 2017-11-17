@@ -1,6 +1,11 @@
+@file:JvmName("Functions")
 package org.glavo.kala
 
-typealias Predicate<T> = (T)-> Boolean
+typealias Predicate<T> = (T) -> Boolean
+
+fun <T> Predicate<T>.test(t: T): Boolean {
+    return this.invoke(t)
+}
 
 infix fun <R, U> (() -> R).andThen(g: (R) -> U): () -> U {
     return { g(this()) }
