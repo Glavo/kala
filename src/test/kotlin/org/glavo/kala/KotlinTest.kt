@@ -1,5 +1,7 @@
 package org.glavo.kala
 
+import org.glavo.kala.collection.*
+
 fun main(args: Array<String>) {
-    listOf<String>().map {  }
+    val a: Set<Int>? = null
 }
