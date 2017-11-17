@@ -1,6 +1,7 @@
 package org.glavo.kala.control
 
 import java.util.*
+import kotlin.reflect.KProperty
 
 sealed class Option<out T>(
         @JvmField
@@ -22,7 +23,7 @@ sealed class Option<out T>(
     fun get(): T = value
 
     fun isEmpty(): Boolean =
-         _value == null
+            _value == null
 
     fun isDefined(): Boolean =
             !isEmpty()
@@ -36,8 +37,8 @@ sealed class Option<out T>(
             f(value)
     }
 
-    inline fun <V> map(mapper: (T) -> V):Option<V> {
-        return if(isEmpty()) None else Some(mapper(value))
+    inline fun <V> map(mapper: (T) -> V): Option<V> {
+        return if (isEmpty()) None else Some(mapper(value))
     }
 
     inline fun filter(p: (T) -> Boolean): Option<T> {
@@ -78,6 +79,10 @@ sealed class Option<out T>(
 
 @Suppress("EqualsOrHashCode")
 class Some<out T>(_value: T) : Option<T>(_value) {
+    init {
+        this._value!!
+    }
+
     override fun equals(other: Any?): Boolean {
         return other is Some<*> && other._value == _value
     }
@@ -97,11 +102,19 @@ object None : Option<Nothing>(null) {
     }
 }
 
+operator fun <T> Option<T>.getValue(thisRef: Any?, property: KProperty<*>): T? {
+    return orNull()
+}
+
 fun <T> Option<T>.getOrElse(default: T): T {
-    return if(isEmpty()) default else get()
+    return if (isEmpty()) default else get()
 }
 
 inline fun <T> Option<T>.getOrElse(default: () -> T): T {
-    return if(isEmpty()) default() else get()
+    return if (isEmpty()) default() else get()
+}
+
+fun <T> Option<Option<T>>.flatten(): Option<T> {
+    return getOrElse(None)
 }
 
