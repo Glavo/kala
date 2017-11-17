@@ -60,5 +60,5 @@ interface Value<out T> : Iterable<T> {
      *
      * @return A new Iterator
      */
-    override fun iterator(): org.glavo.kala.collection.Iterator<T>
+    override fun iterator(): Iterator<T>
 }

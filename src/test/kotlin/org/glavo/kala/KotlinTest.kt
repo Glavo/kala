@@ -1,7 +1,7 @@
 package org.glavo.kala
 
-import org.glavo.kala.collection.*
-
 fun main(args: Array<String>) {
-    val a: Set<Int>? = null
+    val v = For(1..10).yield {
+        it + 10
+    }
 }
