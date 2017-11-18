@@ -157,7 +157,7 @@ constructor(
         }
     }
 
-     inner class SubList(override val size: Int) : AbstractImmutableList<E>() {
+    inner class SubList(override val size: Int) : AbstractImmutableList<E>() {
         override fun subList(fromIndex: Int, toIndex: Int): ImmutableList<E> {
             if (fromIndex < 0)
                 throw IndexOutOfBoundsException("fromIndex = $fromIndex")
@@ -171,7 +171,7 @@ constructor(
             if (toIndex >= size) {
                 throw IndexOutOfBoundsException("toIndex = $toIndex")
             }
-            if(toIndex - fromIndex > size) {
+            if (toIndex - fromIndex > size) {
                 throw IndexOutOfBoundsException()
             }
             return (this@Cons.drop(fromIndex) as? Cons<E>)?.SubList(toIndex - fromIndex) ?: Nil
@@ -222,7 +222,7 @@ constructor(
         if (toIndex >= size) {
             throw IndexOutOfBoundsException("toIndex = $toIndex")
         }
-        if(toIndex - fromIndex > size) {
+        if (toIndex - fromIndex > size) {
             throw IndexOutOfBoundsException()
         }
         return (drop(fromIndex) as? Cons<E>)?.SubList(toIndex - fromIndex) ?: Nil
