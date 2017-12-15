@@ -237,17 +237,17 @@ object Nil : ImmutableLinkedList<Nothing>() {
 
     override fun isEmpty(): Boolean = true
 
-    override fun iterator(): Iterator<Nothing> = Iterators.emptyIterator
+    override fun iterator(): Iterator<Nothing> = EmptyIterator
 
     override fun lastIndexOf(element: Nothing): Int = -1
 
     override val head: Nothing
         get() = throw NoSuchElementException("Nil.head")
 
-    override fun listIterator(): ListIterator<Nothing> = Iterators.emptyListIterator
+    override fun listIterator(): ListIterator<Nothing> = EmptyListIterator
 
     override fun listIterator(index: Int): ListIterator<Nothing> {
-        return if (index == 0) Iterators.emptyListIterator
+        return if (index == 0) EmptyListIterator
         else throw IndexOutOfBoundsException("index=$index")
     }
 
