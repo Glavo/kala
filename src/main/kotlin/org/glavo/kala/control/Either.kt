@@ -1,19 +1,99 @@
+@file:JvmName("Eithers")
+
 package org.glavo.kala.control
 
 import org.glavo.kala.collection.EmptyIterator
+import org.glavo.kala.collection.OneElementIterator
 
 sealed class Either<out L, out R> : Iterable<R> {
+
+    inner class LeftProjection : Iterable<L> {
+        inline fun <U> map(mapper: (L) -> U): Either<U, R> {
+            @Suppress("UNCHECKED_CAST")
+            return if (isLeft()) Left(mapper(leftValue))
+            else this@Either as Either<U, R>
+        }
+
+        override fun iterator(): Iterator<L> {
+            return when {
+                isLeft() -> OneElementIterator(leftValue)
+                else -> EmptyIterator
+            }
+        }
+
+    }
+
+    inner class RightProjection : Iterable<R> {
+        inline fun <U> map(mapper: (R) -> U): Either<L, U> {
+            @Suppress("UNCHECKED_CAST")
+            return if (isRight()) Right(mapper(rightValue))
+            else this@Either as Either<L, U>
+        }
+
+        override fun iterator(): Iterator<R> {
+            return when {
+                isRight() -> OneElementIterator(rightValue)
+                else -> EmptyIterator
+            }
+        }
+    }
+
     open val leftValue: L
         get() = throw NoSuchElementException("leftValue on Right")
 
     open val rightValue: R
         get() = throw NoSuchElementException("rightValue on Left")
 
+    fun left(): LeftProjection {
+        return LeftProjection()
+    }
+
+    fun right(): RightProjection {
+        return RightProjection()
+    }
+
     open fun isLeft(): Boolean = false
 
     fun isRight(): Boolean = !isLeft()
 
-    fun orNull(): R? = if (isRight()) rightValue else null
+    fun getOrNull(): R? = if (isRight()) rightValue else null
+
+    fun getLeftOrNull(): L? = if (isLeft()) leftValue else null
+
+    fun getRightOrNull(): R? = if (isRight()) rightValue else null
+
+    inline fun <X, Y> bimap(mapper1: (L) -> X, mapper2: (R) -> Y): Either<X, Y> {
+        return if (isLeft())
+            Left(mapper1(leftValue))
+        else
+            Right(mapper2(rightValue))
+    }
+
+    inline fun <U> map(mapper: (R) -> U): Either<L, U> {
+        @Suppress("UNCHECKED_CAST")
+        return if (isRight()) Right(mapper(rightValue))
+        else this as Either<L, U>
+    }
+}
+
+fun <R> Either<*, R>.getOrElse(other: R): R {
+    return if (this.isRight()) this.rightValue else other
+}
+
+inline fun <R> Either<*, R>.getOrElseGet(other: () -> R): R {
+    return if (this.isRight()) this.rightValue else other()
+}
+
+inline fun <L, R> Either<L, R>.getOrElseGet(other: (L) -> R): R {
+    return if (this.isRight()) this.rightValue else other(this.leftValue)
+}
+
+inline fun <R> Either<*, R>.getOrElseThrow(other: () -> Throwable): R {
+    return if (this.isRight()) this.rightValue else throw other()
+}
+
+inline fun <L, R> Either<L, R>.getOrElseThrow(other: (L) -> Throwable): R {
+    return if (this.isRight()) this.rightValue else throw other(this.leftValue)
 }
 
 data class Left<out T>(val value: T) : Either<T, Nothing>() {
@@ -23,6 +103,8 @@ data class Left<out T>(val value: T) : Either<T, Nothing>() {
         get() = value
 
     override fun iterator(): Iterator<Nothing> = EmptyIterator
+
+    override fun toString(): String = "Left($value)"
 }
 
 data class Right<out T>(val value: T) : Either<Nothing, T>() {
@@ -40,4 +122,6 @@ data class Right<out T>(val value: T) : Either<Nothing, T>() {
         }
 
     }
+
+    override fun toString(): String = "Right($value)"
 }

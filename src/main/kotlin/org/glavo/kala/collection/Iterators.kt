@@ -12,6 +12,8 @@ object EmptyIterator : MutableIterator<Nothing> {
     override fun remove() {
         throw IllegalStateException()
     }
+
+    override fun toString(): String = "empty iterator"
 }
 
 object EmptyListIterator : ListIterator<Nothing> {
@@ -31,6 +33,7 @@ object EmptyListIterator : ListIterator<Nothing> {
 
     override fun previousIndex(): Int = -1
 
+    override fun toString(): String = "empty iterator"
 }
 
 class OneElementIterator<out T>(val value: T) : Iterator<T> {
@@ -46,4 +49,6 @@ class OneElementIterator<out T>(val value: T) : Iterator<T> {
         return value
     }
 
+
+    override fun toString(): String = if (hasNext) "non-empty iterator" else "empty iterator"
 }
