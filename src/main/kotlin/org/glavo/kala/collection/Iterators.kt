@@ -1,35 +1,49 @@
+@file:JvmName("Iterators")
+
 package org.glavo.kala.collection
 
-object Iterators {
-    val emptyIterator: MutableIterator<Nothing> = object : MutableIterator<Nothing> {
-        override fun hasNext(): Boolean = false
+object EmptyIterator : MutableIterator<Nothing> {
+    override fun hasNext(): Boolean = false
 
-        override fun next(): Nothing {
-            throw NoSuchElementException("EmptyIterator.next")
-        }
-
-        override fun remove() {
-            throw IllegalStateException()
-        }
+    override fun next(): Nothing {
+        throw NoSuchElementException("next() on empty iterator")
     }
 
-    val emptyListIterator: ListIterator<Nothing> = object : ListIterator<Nothing> {
-        override fun hasNext(): Boolean = false
+    override fun remove() {
+        throw IllegalStateException()
+    }
+}
 
-        override fun hasPrevious(): Boolean = false
+object EmptyListIterator : ListIterator<Nothing> {
+    override fun hasNext(): Boolean = false
 
-        override fun next(): Nothing {
-            throw NoSuchElementException("EmptyListIterator.next")
+    override fun hasPrevious(): Boolean = false
+
+    override fun next(): Nothing {
+        throw NoSuchElementException("next() on empty iterator")
+    }
+
+    override fun nextIndex(): Int = 0
+
+    override fun previous(): Nothing {
+        throw NoSuchElementException("previous() on empty iterator")
+    }
+
+    override fun previousIndex(): Int = -1
+
+}
+
+class OneElementIterator<out T>(val value: T) : Iterator<T> {
+    private var hasNext = true
+
+    override fun hasNext(): Boolean = hasNext
+
+    override fun next(): T {
+        if (!hasNext) {
+            throw NoSuchElementException("next() on empty iterator")
         }
-
-        override fun nextIndex(): Int = 0
-
-        override fun previous(): Nothing {
-            throw NoSuchElementException("EmptyListIterator.previous")
-        }
-
-        override fun previousIndex(): Int = -1
-
+        hasNext = true
+        return value
     }
 
 }
