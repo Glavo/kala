@@ -36,6 +36,7 @@ inline operator fun Path.div(other: String): Path = this.resolve(other)
 
 inline operator fun Path.div(other: Path): Path = this.resolve(other)
 
+@Suppress("UNUSED_PARAMETER")
 inline operator fun Path.div(p: parentDir): Path = this.parent
 
 inline fun Path.createFile(vararg attrs: FileAttribute<*>) = Files.createFile(this, *attrs)

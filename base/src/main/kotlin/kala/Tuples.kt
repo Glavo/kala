@@ -18,181 +18,6 @@ sealed class Tuple {
      * @return the number of elements.
      */
     abstract fun arity(): Int
-
-    companion object {
-        /**
-         * The maximum arity of an Tuple.
-         *
-         *
-         * Note: This value might be changed in a future version of Vavr.
-         * So it is recommended to use this constant instead of hardcoding the current maximum arity.
-         */
-        val MAX_ARITY = 8
-
-        // -- factory methods
-
-        /**
-         * Creates the empty tuple.
-         *
-         * @return the empty tuple.
-         */
-        @JvmStatic
-        fun empty(): Tuple0 {
-            return Tuple0.instance()
-        }
-
-        /**
-         * Creates a tuple of one element.
-         *
-         * @param <T1> type of the 1st element
-         * @param t1 the 1st element
-         * @return a tuple of one element.
-        </T1> */
-        @JvmStatic
-        fun <T1> of(t1: T1): Tuple1<T1> {
-            return Tuple1(t1)
-        }
-
-        /**
-         * Creates a tuple of two elements.
-         *
-         * @param <T1> type of the 1st element
-         * @param <T2> type of the 2nd element
-         * @param t1 the 1st element
-         * @param t2 the 2nd element
-         * @return a tuple of two elements.
-        </T2></T1> */
-        @JvmStatic
-        fun <T1, T2> of(t1: T1, t2: T2): Tuple2<T1, T2> {
-            return Tuple2(t1, t2)
-        }
-
-        /**
-         * Creates a tuple of three elements.
-         *
-         * @param <T1> type of the 1st element
-         * @param <T2> type of the 2nd element
-         * @param <T3> type of the 3rd element
-         * @param t1 the 1st element
-         * @param t2 the 2nd element
-         * @param t3 the 3rd element
-         * @return a tuple of three elements.
-        </T3></T2></T1> */
-        @JvmStatic
-        fun <T1, T2, T3> of(t1: T1, t2: T2, t3: T3): Tuple3<T1, T2, T3> {
-            return Tuple3(t1, t2, t3)
-        }
-
-        /**
-         * Creates a tuple of 4 elements.
-         *
-         * @param <T1> type of the 1st element
-         * @param <T2> type of the 2nd element
-         * @param <T3> type of the 3rd element
-         * @param <T4> type of the 4th element
-         * @param t1 the 1st element
-         * @param t2 the 2nd element
-         * @param t3 the 3rd element
-         * @param t4 the 4th element
-         * @return a tuple of 4 elements.
-        </T4></T3></T2></T1> */
-        @JvmStatic
-        fun <T1, T2, T3, T4> of(t1: T1, t2: T2, t3: T3, t4: T4): Tuple4<T1, T2, T3, T4> {
-            return Tuple4(t1, t2, t3, t4)
-        }
-
-        /**
-         * Creates a tuple of 5 elements.
-         *
-         * @param <T1> type of the 1st element
-         * @param <T2> type of the 2nd element
-         * @param <T3> type of the 3rd element
-         * @param <T4> type of the 4th element
-         * @param <T5> type of the 5th element
-         * @param t1 the 1st element
-         * @param t2 the 2nd element
-         * @param t3 the 3rd element
-         * @param t4 the 4th element
-         * @param t5 the 5th element
-         * @return a tuple of 5 elements.
-        </T5></T4></T3></T2></T1> */
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): Tuple5<T1, T2, T3, T4, T5> {
-            return Tuple5(t1, t2, t3, t4, t5)
-        }
-
-        /**
-         * Creates a tuple of 6 elements.
-         *
-         * @param <T1> type of the 1st element
-         * @param <T2> type of the 2nd element
-         * @param <T3> type of the 3rd element
-         * @param <T4> type of the 4th element
-         * @param <T5> type of the 5th element
-         * @param <T6> type of the 6th element
-         * @param t1 the 1st element
-         * @param t2 the 2nd element
-         * @param t3 the 3rd element
-         * @param t4 the 4th element
-         * @param t5 the 5th element
-         * @param t6 the 6th element
-         * @return a tuple of 6 elements.
-        </T6></T5></T4></T3></T2></T1> */
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5, T6> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6): Tuple6<T1, T2, T3, T4, T5, T6> {
-            return Tuple6(t1, t2, t3, t4, t5, t6)
-        }
-
-        /**
-         * Creates a tuple of 7 elements.
-         *
-         * @param <T1> type of the 1st element
-         * @param <T2> type of the 2nd element
-         * @param <T3> type of the 3rd element
-         * @param <T4> type of the 4th element
-         * @param <T5> type of the 5th element
-         * @param <T6> type of the 6th element
-         * @param <T7> type of the 7th element
-         * @param t1 the 1st element
-         * @param t2 the 2nd element
-         * @param t3 the 3rd element
-         * @param t4 the 4th element
-         * @param t5 the 5th element
-         * @param t6 the 6th element
-         * @param t7 the 7th element
-         * @return a tuple of 7 elements.
-        </T7></T6></T5></T4></T3></T2></T1> */
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5, T6, T7> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7): Tuple7<T1, T2, T3, T4, T5, T6, T7> {
-            return Tuple7(t1, t2, t3, t4, t5, t6, t7)
-        }
-
-        /**
-         * Creates a tuple of 8 elements.
-         *
-         * @param <T1> type of the 1st element
-         * @param <T2> type of the 2nd element
-         * @param <T3> type of the 3rd element
-         * @param <T4> type of the 4th element
-         * @param <T5> type of the 5th element
-         * @param <T6> type of the 6th element
-         * @param <T7> type of the 7th element
-         * @param <T8> type of the 8th element
-         * @param t1 the 1st element
-         * @param t2 the 2nd element
-         * @param t3 the 3rd element
-         * @param t4 the 4th element
-         * @param t5 the 5th element
-         * @param t6 the 6th element
-         * @param t7 the 7th element
-         * @param t8 the 8th element
-         * @return a tuple of 8 elements.
-        </T8></T7></T6></T5></T4></T3></T2></T1> */
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5, T6, T7, T8> of(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): Tuple8<T1, T2, T3, T4, T5, T6, T7, T8> {
-            return Tuple8(t1, t2, t3, t4, t5, t6, t7, t8)
-        }
-    }
 }
 
 /**
@@ -253,7 +78,7 @@ object Tuple0 : Tuple(), Comparable<Tuple0>, Serializable {
 /**
  * A tuple of one element which can be seen as cartesian product of one component.
  *
- * @param <T1> type of the 1st element
+ * @param T1 type of the 1st element
  * @author Glavo
  */
 data class Tuple1<out T1>(
@@ -319,14 +144,14 @@ data class Tuple1<out T1>(
 /**
  * A tuple of two elements which can be seen as cartesian product of two components.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
  * @author Glavo
  */
 data class Tuple2<out T1, out T2>(
         @JvmField val _1: T1,
         @JvmField val _2: T2
-) : Tuple(), Serializable, Map.Entry<T1, T2> {
+) : Tuple(), Map.Entry<T1, T2>, Serializable {
 
     companion object {
         private const val serialVersionUID = 1L
@@ -456,11 +281,11 @@ data class Tuple2<out T1, out T2>(
 }
 
 /**
- * A tuple of three elements which can be seen as cartesian product of two components.
+ * A tuple of three elements which can be seen as cartesian product of three components.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
  * @author Glavo
  */
 data class Tuple3<out T1, out T2, out T3>(
@@ -605,11 +430,12 @@ data class Tuple3<out T1, out T2, out T3>(
 }
 
 /**
- * A tuple of four elements which can be seen as cartesian product of two components.
+ * A tuple of 4 elements which can be seen as cartesian product of 4 components.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
  * @author Glavo
  */
 data class Tuple4<out T1, out T2, out T3, out T4>(
@@ -666,6 +492,16 @@ data class Tuple4<out T1, out T2, out T3, out T4>(
             "($_1, $_2, $_3, $_4)"
 }
 
+/**
+ * A tuple of 5 elements which can be seen as cartesian product of 5 components.
+ *
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @author Glavo
+ */
 data class Tuple5<out T1, out T2, out T3, out T4, out T5>(
         @JvmField val _1: T1,
         @JvmField val _2: T2,
@@ -731,6 +567,17 @@ data class Tuple5<out T1, out T2, out T3, out T4, out T5>(
             "($_1, $_2, $_3, $_4, $_5)"
 }
 
+/**
+ * A tuple of 6 elements which can be seen as cartesian product of two components.
+ *
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
+ * @author Glavo
+ */
 data class Tuple6<out T1, out T2, out T3, out T4, out T5, out T6>(
         @JvmField val _1: T1,
         @JvmField val _2: T2,
@@ -805,6 +652,18 @@ data class Tuple6<out T1, out T2, out T3, out T4, out T5, out T6>(
             "($_1, $_2, $_3, $_4, $_5, $_6)"
 }
 
+/**
+ * A tuple of 7 elements which can be seen as cartesian product of 7 components.
+ *
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
+ * @param T7 type of the 7th element
+ * @author Glavo
+ */
 data class Tuple7<out T1, out T2, out T3, out T4, out T5, out T6, out T7>(
         @JvmField val _1: T1,
         @JvmField val _2: T2,
@@ -889,6 +748,19 @@ data class Tuple7<out T1, out T2, out T3, out T4, out T5, out T6, out T7>(
             "($_1, $_2, $_3, $_4, $_5, $_6, $_7)"
 }
 
+/**
+ * A tuple of 8 elements which can be seen as cartesian product of 8 components.
+ *
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
+ * @param T7 type of the 7th element
+ * @param T8 type of the 8th element
+ * @author Glavo
+ */
 data class Tuple8<out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8>(
         @JvmField val _1: T1,
         @JvmField val _2: T2,
@@ -983,6 +855,123 @@ data class Tuple8<out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8
 
 }
 
+/**
+ * A tuple of 9 elements which can be seen as cartesian product of 9 components.
+ *
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
+ * @param T7 type of the 7th element
+ * @param T8 type of the 8th element
+ * @param T9 type of the 9th element
+ * @author Glavo
+ */
+data class Tuple9<out T1, out T2, out T3, out T4, out T5, out T6, out T7, out T8, out T9>(
+        @JvmField val _1: T1,
+        @JvmField val _2: T2,
+        @JvmField val _3: T3,
+        @JvmField val _4: T4,
+        @JvmField val _5: T5,
+        @JvmField val _6: T6,
+        @JvmField val _7: T7,
+        @JvmField val _8: T8,
+        @JvmField val _9: T9
+) : Tuple(), Serializable {
+    companion object {
+        private const val serialVersionUID = 1L
+    }
+
+    override fun arity(): Int = 9
+
+    /**
+     * Getter of the 1st element of this tuple.
+     *
+     * @return the 1st element of this Tuple.
+     */
+    fun _1(): T1 {
+        return _1
+    }
+
+    /**
+     * Getter of the 2nd element of this tuple.
+     *
+     * @return the 2nd element of this Tuple.
+     */
+    fun _2(): T2 {
+        return _2
+    }
+
+    /**
+     * Getter of the 3rd element of this tuple.
+     *
+     * @return the 3rd element of this Tuple.
+     */
+    fun _3(): T3 {
+        return _3
+    }
+
+    /**
+     * Getter of the 4th element of this tuple.
+     *
+     * @return the 4th element of this Tuple.
+     */
+    fun _4(): T4 {
+        return _4
+    }
+
+    /**
+     * Getter of the 5th element of this tuple.
+     *
+     * @return the 5th element of this Tuple.
+     */
+    fun _5(): T5 {
+        return _5
+    }
+
+    /**
+     * Getter of the 6th element of this tuple.
+     *
+     * @return the 6th element of this Tuple.
+     */
+    fun _6(): T6 {
+        return _6
+    }
+
+    /**
+     * Getter of the 7th element of this tuple.
+     *
+     * @return the 7th element of this Tuple.
+     */
+    fun _7(): T7 {
+        return _7
+    }
+
+    /**
+     * Getter of the 8th element of this tuple.
+     *
+     * @return the 8th element of this Tuple.
+     */
+    fun _8(): T8 {
+        return _8
+    }
+
+    /**
+     * Getter of the 9th element of this tuple.
+     *
+     * @return the 9th element of this Tuple.
+     */
+    fun _9(): T9 {
+        return _9
+    }
+
+    override fun toString(): String =
+            "($_1, $_2, $_3, $_4, $_5, $_6, $_7, $_8, $_9)"
+
+}
+
 operator fun <U1 : Comparable<U1>> Tuple1<U1>.compareTo(other: Tuple1<U1>): Int {
     _1.compareTo(other._1).also { if (it != 0) return it }
     return 0
@@ -1016,10 +1005,10 @@ fun tuple(): Tuple0 {
 /**
  * Creates a tuple of one element.
  *
- * @param <T1> type of the 1st element
+ * @param T1 type of the 1st element
  * @param t1 the 1st element
  * @return a tuple of one element.
-</T1> */
+ */
 fun <T1> tuple(t1: T1): Tuple1<T1> {
     return Tuple1(t1)
 }
@@ -1027,12 +1016,12 @@ fun <T1> tuple(t1: T1): Tuple1<T1> {
 /**
  * Creates a tuple of two elements.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
  * @param t1 the 1st element
  * @param t2 the 2nd element
  * @return a tuple of two elements.
-</T2></T1> */
+ */
 fun <T1, T2> tuple(t1: T1, t2: T2): Tuple2<T1, T2> {
     return Tuple2(t1, t2)
 }
@@ -1040,14 +1029,14 @@ fun <T1, T2> tuple(t1: T1, t2: T2): Tuple2<T1, T2> {
 /**
  * Creates a tuple of three elements.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
  * @param t1 the 1st element
  * @param t2 the 2nd element
  * @param t3 the 3rd element
  * @return a tuple of three elements.
-</T3></T2></T1> */
+ */
 fun <T1, T2, T3> tuple(t1: T1, t2: T2, t3: T3): Tuple3<T1, T2, T3> {
     return Tuple3(t1, t2, t3)
 }
@@ -1055,16 +1044,16 @@ fun <T1, T2, T3> tuple(t1: T1, t2: T2, t3: T3): Tuple3<T1, T2, T3> {
 /**
  * Creates a tuple of 4 elements.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
- * @param <T4> type of the 4th element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
  * @param t1 the 1st element
  * @param t2 the 2nd element
  * @param t3 the 3rd element
  * @param t4 the 4th element
  * @return a tuple of 4 elements.
-</T4></T3></T2></T1> */
+ */
 fun <T1, T2, T3, T4> tuple(t1: T1, t2: T2, t3: T3, t4: T4): Tuple4<T1, T2, T3, T4> {
     return Tuple4(t1, t2, t3, t4)
 }
@@ -1072,18 +1061,18 @@ fun <T1, T2, T3, T4> tuple(t1: T1, t2: T2, t3: T3, t4: T4): Tuple4<T1, T2, T3, T
 /**
  * Creates a tuple of 5 elements.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
- * @param <T4> type of the 4th element
- * @param <T5> type of the 5th element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
  * @param t1 the 1st element
  * @param t2 the 2nd element
  * @param t3 the 3rd element
  * @param t4 the 4th element
  * @param t5 the 5th element
  * @return a tuple of 5 elements.
-</T5></T4></T3></T2></T1> */
+ */
 fun <T1, T2, T3, T4, T5> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): Tuple5<T1, T2, T3, T4, T5> {
     return Tuple5(t1, t2, t3, t4, t5)
 }
@@ -1091,12 +1080,12 @@ fun <T1, T2, T3, T4, T5> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): Tuple5<T
 /**
  * Creates a tuple of 6 elements.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
- * @param <T4> type of the 4th element
- * @param <T5> type of the 5th element
- * @param <T6> type of the 6th element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
  * @param t1 the 1st element
  * @param t2 the 2nd element
  * @param t3 the 3rd element
@@ -1104,7 +1093,7 @@ fun <T1, T2, T3, T4, T5> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): Tuple5<T
  * @param t5 the 5th element
  * @param t6 the 6th element
  * @return a tuple of 6 elements.
-</T6></T5></T4></T3></T2></T1> */
+ */
 fun <T1, T2, T3, T4, T5, T6> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6): Tuple6<T1, T2, T3, T4, T5, T6> {
     return Tuple6(t1, t2, t3, t4, t5, t6)
 }
@@ -1112,13 +1101,13 @@ fun <T1, T2, T3, T4, T5, T6> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T
 /**
  * Creates a tuple of 7 elements.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
- * @param <T4> type of the 4th element
- * @param <T5> type of the 5th element
- * @param <T6> type of the 6th element
- * @param <T7> type of the 7th element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
+ * @param T7 type of the 7th element
  * @param t1 the 1st element
  * @param t2 the 2nd element
  * @param t3 the 3rd element
@@ -1127,7 +1116,7 @@ fun <T1, T2, T3, T4, T5, T6> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T
  * @param t6 the 6th element
  * @param t7 the 7th element
  * @return a tuple of 7 elements.
-</T7></T6></T5></T4></T3></T2></T1> */
+ */
 fun <T1, T2, T3, T4, T5, T6, T7> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7): Tuple7<T1, T2, T3, T4, T5, T6, T7> {
     return Tuple7(t1, t2, t3, t4, t5, t6, t7)
 }
@@ -1135,14 +1124,14 @@ fun <T1, T2, T3, T4, T5, T6, T7> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t
 /**
  * Creates a tuple of 8 elements.
  *
- * @param <T1> type of the 1st element
- * @param <T2> type of the 2nd element
- * @param <T3> type of the 3rd element
- * @param <T4> type of the 4th element
- * @param <T5> type of the 5th element
- * @param <T6> type of the 6th element
- * @param <T7> type of the 7th element
- * @param <T8> type of the 8th element
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
+ * @param T7 type of the 7th element
+ * @param T8 type of the 8th element
  * @param t1 the 1st element
  * @param t2 the 2nd element
  * @param t3 the 3rd element
@@ -1152,10 +1141,38 @@ fun <T1, T2, T3, T4, T5, T6, T7> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t
  * @param t7 the 7th element
  * @param t8 the 8th element
  * @return a tuple of 8 elements.
-</T8></T7></T6></T5></T4></T3></T2></T1> */
+ */
 fun <T1, T2, T3, T4, T5, T6, T7, T8> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8): Tuple8<T1, T2, T3, T4, T5, T6, T7, T8> {
     return Tuple8(t1, t2, t3, t4, t5, t6, t7, t8)
 }
+
+/**
+ * Creates a tuple of 9 elements.
+ *
+ * @param T1 type of the 1st element
+ * @param T2 type of the 2nd element
+ * @param T3 type of the 3rd element
+ * @param T4 type of the 4th element
+ * @param T5 type of the 5th element
+ * @param T6 type of the 6th element
+ * @param T7 type of the 7th element
+ * @param T8 type of the 8th element
+ * @param T9 type of the 9th element
+ * @param t1 the 1st element
+ * @param t2 the 2nd element
+ * @param t3 the 3rd element
+ * @param t4 the 4th element
+ * @param t5 the 5th element
+ * @param t6 the 6th element
+ * @param t7 the 7th element
+ * @param t8 the 8th element
+ * @param t9 the 9th element
+ * @return a tuple of 9 elements.
+ */
+fun <T1, T2, T3, T4, T5, T6, T7, T8, T9> tuple(t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6, t7: T7, t8: T8, t9: T9): Tuple9<T1, T2, T3, T4, T5, T6, T7, T8, T9> {
+    return Tuple9(t1, t2, t3, t4, t5, t6, t7, t8, t9)
+}
+
 
 fun <T1, T2> Map.Entry<T1, T2>.toTuple(): Tuple2<T1, T2> {
     return tuple(key, value)
