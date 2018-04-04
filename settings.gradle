@@ -1,9 +1,11 @@
 rootProject.name = 'kala'
 
-include 'base', 'nio', 'nio-jdk7', 'nio-jdk8'
+include 'base', 'nio', 'nio-jdk7', 'nio-jdk8'//, 'pprint'
 
 project(':base').name = 'kala-base'
 
 project(':nio').name = 'kala-nio'
 project(':nio-jdk7').name = 'kala-nio-jdk7'
 project(':nio-jdk8').name = 'kala-nio-jdk8'
+//project(':reflect').name = 'kala-reflect'
+//project(':pprint').name = 'kala-pprint'

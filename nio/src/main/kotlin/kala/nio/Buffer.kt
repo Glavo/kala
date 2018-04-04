@@ -12,7 +12,7 @@ fun ByteBuffer.asIterator() = object : Iterator<Byte> {
 
 inline operator fun ByteBuffer.iterator() = slice().asIterator()
 
-fun ByteBuffer.asList(): List<Byte> = object : AbstractList<Byte>() {
+fun ByteBuffer.asList(): List<Byte> = object : AbstractList<Byte>(), RandomAccess {
     override val size: Int
         get() = limit() - position()
 
@@ -31,7 +31,7 @@ fun ShortBuffer.asIterator() = object : Iterator<Short> {
 
 inline operator fun ShortBuffer.iterator() = slice().asIterator()
 
-fun ShortBuffer.asList(): List<Short> = object : AbstractList<Short>() {
+fun ShortBuffer.asList(): List<Short> = object : AbstractList<Short>(), RandomAccess {
     override val size: Int
         get() = limit() - position()
 
@@ -50,7 +50,7 @@ fun IntBuffer.asIterator() = object : Iterator<Int> {
 
 inline operator fun IntBuffer.iterator() = slice().asIterator()
 
-fun IntBuffer.asList(): List<Int> = object : AbstractList<Int>() {
+fun IntBuffer.asList(): List<Int> = object : AbstractList<Int>(), RandomAccess {
     override val size: Int
         get() = limit() - position()
 
@@ -68,7 +68,7 @@ fun LongBuffer.asIterator() = object : Iterator<Long> {
 
 inline operator fun LongBuffer.iterator() = slice().asIterator()
 
-fun LongBuffer.asList(): List<Long> = object : AbstractList<Long>() {
+fun LongBuffer.asList(): List<Long> = object : AbstractList<Long>(), RandomAccess {
     override val size: Int
         get() = limit() - position()
 
@@ -86,7 +86,7 @@ fun FloatBuffer.asIterator() = object : Iterator<Float> {
 
 inline operator fun FloatBuffer.iterator() = slice().asIterator()
 
-fun FloatBuffer.asList(): List<Float> = object : AbstractList<Float>() {
+fun FloatBuffer.asList(): List<Float> = object : AbstractList<Float>(), RandomAccess {
     override val size: Int
         get() = limit() - position()
 
@@ -104,7 +104,7 @@ fun DoubleBuffer.asIterator() = object : Iterator<Double> {
 
 inline operator fun DoubleBuffer.iterator() = slice().asIterator()
 
-fun DoubleBuffer.asList(): List<Double> = object : AbstractList<Double>() {
+fun DoubleBuffer.asList(): List<Double> = object : AbstractList<Double>(), RandomAccess {
     override val size: Int
         get() = limit() - position()
 
@@ -122,7 +122,7 @@ fun CharBuffer.asIterator() = object : Iterator<Char> {
 
 inline operator fun CharBuffer.iterator() = slice().asIterator()
 
-fun CharBuffer.asList(): List<Char> = object : AbstractList<Char>() {
+fun CharBuffer.asList(): List<Char> = object : AbstractList<Char>(), RandomAccess {
     override val size: Int
         get() = limit() - position()
 

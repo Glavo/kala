@@ -11,7 +11,7 @@ buildscript {
 
 allprojects {
     group 'org.glavo'
-    version '0.1.0'
+    version '0.1.1'
 }
 
 subprojects {
@@ -52,3 +52,13 @@ subprojects {
         kotlinOptions.jvmTarget = "1.6"
     }
 }
+
+/*
+project(':kala-pprint') {
+    dependencies {
+        // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect
+        compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
+
+    }
+}
+*/
